@@ -6,6 +6,10 @@ import { JwtModule } from "@nestjs/jwt";
 import { EnvsConfig } from "./config/env.config";
 import KafkaSubscriberService from "./common/kafka/kafka-subscriber.service";
 import { AuthModule } from "./auth/auth.module";
+import { ChildrenModule } from "./children/children.module";
+import { SponsorshipsModule } from "./sponsorships/sponsorships.module";
+import { ActivityLogsModule } from "./activity-logs/activity-logs.module";
+import { ChatModule } from "./chat/chat.module";
 
 @Global()
 @Module({
@@ -18,6 +22,10 @@ import { AuthModule } from "./auth/auth.module";
       secret: EnvsConfig.JWT_SECRET,
     }),
     AuthModule,
+    ChildrenModule,
+    SponsorshipsModule,
+    ActivityLogsModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [KafkaSubscriberService],

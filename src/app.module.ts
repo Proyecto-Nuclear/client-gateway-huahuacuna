@@ -11,6 +11,7 @@ import { SponsorshipsModule } from "./sponsorships/sponsorships.module";
 import { ActivityLogsModule } from "./activity-logs/activity-logs.module";
 import { ChatModule } from "./chat/chat.module";
 import { ProjectsModule } from "./projects/projects.module";
+import { EventsModule } from "./events/events.module";
 
 @Global()
 @Module({
@@ -28,6 +29,7 @@ import { ProjectsModule } from "./projects/projects.module";
     ActivityLogsModule,
     ChatModule,
     ProjectsModule,
+    EventsModule,
   ],
   controllers: [],
   providers: [KafkaSubscriberService],

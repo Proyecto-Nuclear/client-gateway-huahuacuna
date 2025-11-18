@@ -12,6 +12,7 @@ import { ActivityLogsModule } from "./activity-logs/activity-logs.module";
 import { ChatModule } from "./chat/chat.module";
 import { ProjectsModule } from "./projects/projects.module";
 import { EventsModule } from "./events/events.module";
+import { DonationsModule } from "./donations/donations.module";
 
 @Global()
 @Module({
@@ -30,6 +31,7 @@ import { EventsModule } from "./events/events.module";
     ChatModule,
     ProjectsModule,
     EventsModule,
+    DonationsModule,
   ],
   controllers: [],
   providers: [KafkaSubscriberService],

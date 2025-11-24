@@ -13,6 +13,8 @@ import { ChatModule } from "./chat/chat.module";
 import { ProjectsModule } from "./projects/projects.module";
 import { EventsModule } from "./events/events.module";
 import { DonationsModule } from "./donations/donations.module";
+import { HealthModule } from "./health/health.module";
+import { CircuitBreakerModule } from "./common/circuit-breaker/circuit-breaker.module";
 
 @Global()
 @Module({
@@ -20,10 +22,12 @@ import { DonationsModule } from "./donations/donations.module";
     DiscoveryModule,
     KafkaGlobalModule,
     CacheGlobalModule,
+    CircuitBreakerModule,
     JwtModule.register({
       global: true,
       secret: EnvsConfig.JWT_SECRET,
     }),
+    HealthModule,
     AuthModule,
     ChildrenModule,
     SponsorshipsModule,

@@ -12,6 +12,7 @@ import {
   UpdateAdminDto,
   RefreshTokenDto,
 } from './dto';
+import { CircuitBreakerService } from '../common/circuit-breaker/circuit-breaker.service';
 
 @Injectable()
 export class AuthService {
@@ -19,33 +20,51 @@ export class AuthService {
 
   constructor(
     @Inject('AUTH_SERVICE') private readonly kafkaClient: ClientKafka,
+    private readonly circuitBreaker: CircuitBreakerService,
   ) {}
 
   /**
    * RF-001: Registro de Padrinos
+   * Protegido con Circuit Breaker
    */
   async register(dto: RegisterDto, ipAddress?: string, userAgent?: string) {
     this.logger.log(`Registering new user: ${dto.email}`);
-    return await firstValueFrom(
-      this.kafkaClient.send('auth_register', {
-        dto,
-        ipAddress,
-        userAgent,
+
+    // Ejecutar con circuit breaker
+    return await this.circuitBreaker.execute(
+      'auth-service',
+      () => this.kafkaClient.send('auth_register', { dto, ipAddress, userAgent }),
+      // Fallback: retornar error amigable
+      () => ({
+        error: true,
+        message: 'Auth service is temporarily unavailable. Please try again later.',
+        statusCode: 503,
       }),
+      {
+        timeout: 10000, // 10 segundos para registro
+        errorThresholdPercentage: 50,
+      },
     );
   }
 
   /**
    * RF-002: Autenticación de Usuarios
+   * Protegido con Circuit Breaker
    */
   async login(dto: LoginDto, ipAddress?: string, userAgent?: string) {
     this.logger.log(`Login attempt for: ${dto.email}`);
-    return await firstValueFrom(
-      this.kafkaClient.send('auth_login', {
-        dto,
-        ipAddress,
-        userAgent,
+
+    return await this.circuitBreaker.execute(
+      'auth-service',
+      () => this.kafkaClient.send('auth_login', { dto, ipAddress, userAgent }),
+      () => ({
+        error: true,
+        message: 'Auth service is temporarily unavailable. Please try again later.',
+        statusCode: 503,
       }),
+      {
+        timeout: 5000, // 5 segundos para login
+      },
     );
   }
 

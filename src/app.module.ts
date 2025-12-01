@@ -10,6 +10,7 @@ import { ChildrenModule } from "./children/children.module";
 import { SponsorshipsModule } from "./sponsorships/sponsorships.module";
 import { ActivityLogsModule } from "./activity-logs/activity-logs.module";
 import { ChatModule } from "./chat/chat.module";
+import { LogbookModule } from "./logbook/logbook.module";
 import { ProjectsModule } from "./projects/projects.module";
 import { EventsModule } from "./events/events.module";
 import { DonationsModule } from "./donations/donations.module";
@@ -33,6 +34,7 @@ import { CircuitBreakerModule } from "./common/circuit-breaker/circuit-breaker.m
     SponsorshipsModule,
     ActivityLogsModule,
     ChatModule,
+    LogbookModule,
     ProjectsModule,
     EventsModule,
     DonationsModule,
